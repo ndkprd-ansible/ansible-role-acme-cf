@@ -22,10 +22,3 @@ test:
   stage: test
   script:
     - ansible-lint .
-
-publish_to_galaxy:
-  stage: deploy
-  script:
-    - ansible-galaxy role import --api-key $GALAXY_API_KEY $CI_PROJECT_NAMESPACE $CI_PROJECT_NAME
-  only:
-    - /^v.*$/
