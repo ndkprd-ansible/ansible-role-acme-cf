@@ -1,0 +1,36 @@
+---
+
+image: python:3.11
+
+stages:
+  - test
+  - deploy
+
+variables:
+  ANSIBLE_FORCE_COLOR: "true"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip/
+
+before_script:
+  - pip install --upgrade pip
+  - pip install ansible-core ansible-lint
+
+test:
+  stage: test
+  script:
+    - ansible-lint .
+    - ansible-galaxy role install -r requirements.yaml
+    - ansible-playbook examples/playbook.yaml --syntax-check
+
+publish_to_galaxy:
+  stage: deploy
+  script:
+    - ansible-galaxy role import --api-key $GALAXY_API_KEY $CI_PROJECT_NAMESPACE $CI_PROJECT_NAME
+  only:
+    - /^v.*$/
+  environment:
+    name: ansible-galaxy
+    url: https://galaxy.ansible.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
