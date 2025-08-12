@@ -23,7 +23,7 @@ test:
   script:
     - ansible-lint .
     - ansible-galaxy role install -r requirements.yaml
-    - ansible-playbook examples/playbook.yaml --syntax-check
+    - ansible-playbook -i examples/hosts.yaml examples/playbook.yaml --syntax-check
 
 publish_to_galaxy:
   stage: deploy
