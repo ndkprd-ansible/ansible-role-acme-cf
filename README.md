@@ -14,9 +14,48 @@ ansible-galaxy install ndkprd.acme_cf
 
 ### Hosts Example
 
-```ini
-[localhost]
-localhost
+```yaml
+---
+
+# hosts.yaml
+
+acme_cf_domains:
+  hosts:
+    dev.example.com:
+      domain: dev.example.com
+      domain_alias_enabled: true
+      domain_alias_zone: example.xyz
+      domain_alias_record: "_acme-challenge"
+    stg.example.com:
+      domain: stg.example.com
+      domain_alias_enabled: true
+      domain_alias_zone: example.xyz
+      domain_alias_record: "_acme-challenge"
+    devops.example.com:
+      domain: devops.example.com
+      domain_alias_enabled: true
+      domain_alias_zone: example.xyz
+      domain_alias_record: "_acme-challenge"
+    itops.example.com:
+      domain: itops.example.com
+      domain_alias_enabled: true
+      domain_alias_zone: example.xyz
+      domain_alias_record: "_acme-challenge"
+    example.io:
+      domain: example.io
+      domain_alias_enabled: true
+      domain_alias_zone: example.xyz
+      domain_alias_record: "_acme-challenge"
+    example.link:
+      domain: example.link
+      domain_alias_enabled: true
+      domain_alias_zone: example.xyz
+      domain_alias_record: "_acme-challenge"
+    example.xyz:
+      domain: example.xyz
+      domain_alias_enabled: true
+      domain_alias_zone: example.xyz
+      domain_alias_record: "_acme-challenge"
 ```
 
 ### Playbook Example
@@ -24,30 +63,22 @@ localhost
 ```yaml
 ---
 
-- name: Do DNS-01 challenge.
-  hosts: localhost
+- name: Generate SSL certificates using ACME DNS-01 challenge.
+  hosts: acme_cf_domains
+  connection: local
   become: false
   gather_facts: false
-  connection: local
   vars:
-    acme_cf_certcountry_id: "XX"
-    acme_cf_certorg_name: "Example Inc."
-    acme_cf_domains:
-      # without CNAME delegation
-      - domain: "example.com"
-      # if using CNAME delegation
-      - domain: "example.com"
-        alias_enabled: true
-        alias_zone: "example.xyz"
-        alias_record: "_acme-challenge.acme"
+    acme_cf_files_dir: "/home/ndkprd/.ssl/acme"
     acme_cf_server_dir: "https://acme-staging-v02.api.letsencrypt.org/directory"
     acme_cf_remaining_days: 30
-    acme_cf_account_email: "contact@example.com"
-    acme_cf_api_token: "{{lookup('ansible.builtin.env', 'CF_API_TOKEN') }}"
-
+    acme_cf_account_email: andhika.pradana@asdp.id
+    acme_cf_api_token: "{{ lookup('ansible.builtin.env', 'CLOUDFLARE_API_TOKEN') }}"
+    acme_cf_alias_enabled: true
+    acme_cf_alias_zone: "asdp.my.id"
+    acme_cf_alias_record: "_acme-challenge"
   roles:
     - ndkprd.acme_cf
-
 ```
 
 The generated files will be located in the dir you set in `acme_cf_files_dir` var, with the default being `/tmp/acme_cf`.
