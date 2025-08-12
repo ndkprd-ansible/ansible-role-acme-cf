@@ -29,6 +29,3 @@ publish_to_galaxy:
     - ansible-galaxy role import --api-key $GALAXY_API_KEY $CI_PROJECT_NAMESPACE $CI_PROJECT_NAME
   only:
     - /^v.*$/
-  environment:
-    name: ansible-galaxy
-    url: https://galaxy.ansible.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
