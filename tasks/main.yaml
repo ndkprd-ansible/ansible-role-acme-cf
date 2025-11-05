@@ -2,7 +2,7 @@
 
 - name: Pre-task | Configure variable.
   ansible.builtin.set_fact:
-    _acme_cf_file_dir: "{{ acme_cf_files_dir }}/{{ domain }}"
+    _acme_cf_files_dir: "{{ acme_cf_files_dir }}/{{ domain }}"
 
 - name: Generate private key.
   ansible.builtin.import_tasks: 01-generate-private-key.yaml
