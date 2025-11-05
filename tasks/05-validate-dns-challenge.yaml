@@ -2,12 +2,12 @@
 
 - name: Validate Challenge | Validate challenge and retrieve the cert and intermediate certificates.
   community.crypto.acme_certificate:
-    account_key_src: "{{ acme_cf_files_dir }}/{{ domain }}/{{ domain }}.account.private.key"
+    account_key_src: "{{ _acme_cf_files_dir }}/{{ domain }}.account.private.key"
     account_email: "{{ acme_cf_account_email }}"
-    src: "{{ acme_cf_files_dir }}/{{ domain }}/{{ domain }}.csr"
-    cert: "{{ acme_cf_files_dir }}/{{ domain }}/{{ domain }}.crt"
-    fullchain: "{{ acme_cf_files_dir }}/{{ domain }}/{{ domain }}.fullchain.crt"
-    chain: "{{ acme_cf_files_dir }}/{{ domain }}/{{ domain }}.intermediate.crt"
+    src: "{{ _acme_cf_files_dir }}/{{ domain }}.csr"
+    cert: "{{ _acme_cf_files_dir }}/{{ domain }}.crt"
+    fullchain: "{{ _acme_cf_files_dir }}/{{ domain }}.fullchain.crt"
+    chain: "{{ _acme_cf_files_dir }}/{{ domain }}.intermediate.crt"
     challenge: dns-01
     acme_directory: "{{ acme_cf_server_dir }}"
     remaining_days: "{{ acme_cf_remaining_days }}"
@@ -19,5 +19,5 @@
     (__domain_wildcard_txt_value | length) > 0
   register: validation_result
   retries: 5
-  delay: 30
+  delay: 60
   until: validation_result is not failed
