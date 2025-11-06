@@ -12,6 +12,7 @@
   register: base_txt_generate_results
   retries: 3
   delay: 20
+  when: __challenge_data | length > 0
 
 - name: Generate TXT Records | Create TXT record using alias on Cloudflare (wildcard).
   community.general.cloudflare_dns:
@@ -25,3 +26,4 @@
   register: wildcard_txt_generate_results
   retries: 3
   delay: 20
+  when: __challenge_data | length > 0
