@@ -8,7 +8,7 @@
 
 - name: Private Key | Generate an OpenSSL RSA 4096 private key for accounts.
   community.crypto.openssl_privatekey:
-    path: "{{ _acme_cf_files_dir }}.account.private.key"
+    path: "{{ _acme_cf_files_dir }}/{{ domain }}.account.private.key"
     size: 4096
     type: RSA
   register: acme_cf_account_private_key_results
@@ -22,7 +22,7 @@
 
 - name: Private Key | Generate an OpenSSL RSA 4096 private key for CSRs.
   community.crypto.openssl_privatekey:
-    path: "{{ _acme_cf_files_dir }}.private.key"
+    path: "{{ _acme_cf_files_dir }}/{{ domain }}.private.key"
     size: 4096
     type: RSA
   register: acme_cf_csr_private_key_results
