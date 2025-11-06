@@ -1,25 +1,13 @@
 ---
 
-# details needed for ACME challenge.
-acme_cf_domains: []
-# acme_cf_domains:
-#   # without CNAME delegation
-#   - domain: "example0.com"
-#   # if using CNAME delegation
-#   - domain: "example1.com"
-#     alias_enabled: true
-#     alias_zone: "example.xyz"
-#     alias_record: "_acme-challenge.acme"
-
-acme_cf_files_dir: "/tmp/acme_cf"
+# Path where the files will be stored.
+acme_cf_files_dir: "/tmp/ansible/acme_cf"
+# ACME endpoint. Defaulting to staging, make sure to override this.
 acme_cf_server_dir: "https://acme-staging-v02.api.letsencrypt.org/directory"
+# Generate new cert if current cert is older than this.
 acme_cf_remaining_days: "30"
+# ACME provider account email.
 acme_cf_account_email: ""
 
 # details needed for Cloudflare API authentication.
 acme_cf_api_token: "{{ acme_cf_api_token | default(lookup('ansible.builtin.env', 'CLOUDFLARE_API_TOKEN')) }}"
-
-# details needed if you want to use an alias/CNAME delegation.
-acme_cf_use_alias: false
-acme_cf_alias_zone: "{{ acme_cf_alias_zone | default(omit) }}"
-acme_cf_alias_record: "{{ acme_cf_alias_record | default(omit) }}"
