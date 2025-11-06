@@ -1,13 +1,32 @@
 ---
 
-name: Release to Ansible Galaxy.
+name: Release
 on:
   push:
     tags:
       - 'v*'
 
 jobs:
-  release-to-galaxy:
-    uses: ndkprd/actions/.github/workflows/ansible-release-to-galaxy.yaml@main
-    secrets:
-      galaxy_api_key: "${{ secrets.GALAXY_API_KEY }}"
+  release:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository.
+        uses: actions/checkout@v4
+        with:
+          path: "ndkprd.acme_cf"
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v5
+
+      - name: Install Ansible.
+        run: pip3 install ansible-core
+
+      - name: Import role to Galaxy.
+        env:
+          GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
+        run: |
+          ansible-galaxy role import \
+            --api-key ${GALAXY_API_KEY} \
+            $(echo ${{ github.repository }} | cut -d/ -f1) \
+            $(echo ${{ github.repository }} | cut -d/ -f2)
